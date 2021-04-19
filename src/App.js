@@ -1,8 +1,12 @@
-import logo from "./logo.svg";
 import "./App.css";
+import { PhoneSignIn } from "./phoneSignIn";
 
 function App() {
-  return <div className="App">App</div>;
+  return (
+    <div className="App">
+      <PhoneSignIn />
+    </div>
+  );
 }
 
 export default App;
