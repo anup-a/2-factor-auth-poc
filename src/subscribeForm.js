@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { auth, firebase } from "./api/firebase";
+import React, { useState } from "react";
+import { firebase } from "./api/firebase";
 import "./subscribe.css";
 
 const initialValues = {
@@ -112,9 +112,9 @@ const SubscribeForm = () => {
     // submit data without image
   };
 
-  const handleFormSubmitWithImage = () => {
-    //call this inside confirm code.
-  };
+  // const handleFormSubmitWithImage = () => {
+  //   //call this inside confirm code.
+  // };
 
   return (
     <div className="subscribe-form">
