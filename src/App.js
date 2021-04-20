@@ -1,10 +1,11 @@
 import "./App.css";
-import { PhoneSignIn } from "./phoneSignIn";
+import SubscribeForm from "./subscribeForm";
 
 function App() {
   return (
     <div className="App">
-      <PhoneSignIn />
+      {/* <PhoneSignIn /> */}
+      <SubscribeForm />
     </div>
   );
 }
