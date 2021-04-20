@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { auth, firebase } from "./api/firebase";
+import "./subscribe.css";
 
 const initialValues = {
   name: "",
@@ -13,13 +14,13 @@ const initialValues = {
 
 const SubscribeForm = () => {
   const [values, setValues] = useState(initialValues);
-  const [phonenumber, setPhonenumber] = useState("");
 
   const [loading, setloading] = useState(false);
   const [complete, setComplete] = useState(false);
   const [captchaSolved, setCaptchaSolved] = useState(false);
-  const [codeConfirmation, setCodeConfirmation] = useState("");
   const [confirmationResult, setConfirmationResult] = useState();
+  const [initialStep, setInitialStep] = useState(true);
+  const [imageFile, setImageFile] = useState();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -56,7 +57,7 @@ const SubscribeForm = () => {
 
     console.log("window.recaptchaVerifier", window.recaptchaVerifier);
 
-    const phoneNumber = "+917798558520";
+    const phoneNumber = phone;
     const appVerifier = window.recaptchaVerifier;
 
     if (appVerifier) {
@@ -75,15 +76,18 @@ const SubscribeForm = () => {
   };
 
   const confirmCode = async () => {
-    if (confirmationResult && codeConfirmation) {
+    if (confirmationResult && otp) {
       console.log("confirmationResult..:", confirmationResult);
-      console.log("codeConfirmation..:", codeConfirmation);
+      console.log("codeConfirmation..:", otp);
 
       try {
         setloading(true);
-        const result = await confirmationResult.confirm(codeConfirmation);
+        const result = await confirmationResult.confirm(otp);
         console.log("[REGISTRATION SUCCESS]");
         console.log("result", result.user?.uid);
+        //
+        // Submit form with uploaded Image. All info is stored in state
+        //
         setComplete(true);
         setloading(false);
       } catch (error) {
@@ -93,74 +97,107 @@ const SubscribeForm = () => {
     }
   };
 
-  const changeCodeConfirmation = (event: any) => {
-    const code = event.target.value;
-    setCodeConfirmation(code);
+  const nextStep = () => {
+    setInitialStep(false);
   };
 
-  const handleSubmit = () => {};
+  const handleChangeImage = (event) => {
+    setImageFile(URL.createObjectURL(event.target.files[0]));
+  };
+
+  const handleFormSubmit = () => {
+    // submit data without image
+  };
+
+  const handleFormSubmitWithImage = () => {
+    //call this inside confirm code.
+  };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <input
-          value={name}
-          onChange={handleInputChange}
-          name="name"
-          type="text"
-          label="name"
-          placeholder="Name"
-        />
-        <input
-          value={phone}
-          onChange={handleInputChange}
-          type="text"
-          name="phone"
-          placeholder="Phone No."
-          label="Phone No."
-        />
-        <input
-          value={address}
-          onChange={handleInputChange}
-          name="address"
-          type="text"
-          label="address"
-          placeholder="Address"
-        />
-        <input
-          value={email}
-          onChange={handleInputChange}
-          name="email"
-          type="email"
-          label="email"
-          placeholder="Email"
-        />
-      </form>
-
-      <div className="new-app">
-        <h1>POC - Firebase Phone Auth</h1>
-
-        {!captchaSolved && (
-          <form>
+    <div className="subscribe-form">
+      {initialStep ? (
+        <form onSubmit={handleFormSubmit} className="step-1">
+          <input
+            value={name}
+            onChange={handleInputChange}
+            name="name"
+            type="text"
+            label="name"
+            placeholder="Name"
+          />
+          <input
+            value={address}
+            onChange={handleInputChange}
+            name="address"
+            type="text"
+            label="address"
+            placeholder="Address"
+          />
+          <input
+            value={email}
+            onChange={handleInputChange}
+            name="email"
+            type="email"
+            label="email"
+            placeholder="Email"
+          />
+          <div className="btn-group">
+            <button className="upload-btn" onClick={nextStep}>
+              Upload Image
+            </button>
+            <button className="submit-btn" type="submit">
+              Submit
+            </button>
+          </div>
+        </form>
+      ) : (
+        <div className="step-2">
+          <h1>Upload Image</h1>
+          <form className="phone-form">
             <div id="recaptcha-container"></div>
-            <input type="text" name="phoneNumber" />
-            <input type="button" value="Cadastrar celular" onClick={onSubmit} />
-          </form>
-        )}
-        {captchaSolved && !complete && (
-          <form>
             <input
+              value={phone}
+              onChange={handleInputChange}
               type="text"
-              name="codeConfirmation"
-              onChange={changeCodeConfirmation}
+              name="phone"
+              disabled={!!captchaSolved}
+              placeholder="Phone No."
+              label="Phone No."
             />
-            <input type="button" value="Confirm code" onClick={confirmCode} />
-          </form>
-        )}
-        {complete && <h3>Cadastro realizado com sucesso!</h3>}
 
-        {loading && <div>Loading...</div>}
-      </div>
+            <input type="button" value="Send OTP" onClick={onSubmit} />
+          </form>
+          {captchaSolved && !complete && (
+            <form className="otp-form">
+              <input
+                value={otp}
+                onChange={handleInputChange}
+                name="otp"
+                type="text"
+                label="otp"
+                placeholder="OTP"
+              />
+              {imageFile && (
+                <img
+                  src={imageFile}
+                  alt="tree-user-uploaded"
+                  width="200px"
+                  className="uploaded-img"
+                />
+              )}
+              <input
+                onChange={(event) => handleChangeImage(event)}
+                id="imageFile"
+                type="file"
+              />
+              <button onClick={confirmCode}>Submit</button>
+            </form>
+          )}
+          {complete && <h3>Added Successfully</h3>}
+
+          {loading && <div>Loading...</div>}
+        </div>
+      )}
     </div>
   );
 };
