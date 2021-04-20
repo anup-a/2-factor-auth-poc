@@ -76,7 +76,8 @@ const SubscribeForm = () => {
     }
   };
 
-  const confirmCode = async () => {
+  const confirmCode = async (e) => {
+    e.preventDefault();
     if (confirmationResult && otp) {
       console.log("confirmationResult..:", confirmationResult);
       console.log("codeConfirmation..:", otp);
@@ -93,6 +94,7 @@ const SubscribeForm = () => {
         setloading(false);
       } catch (error) {
         console.log("error..:", error);
+        alert("Invalid OTP");
         setloading(false);
       }
     }
@@ -156,26 +158,28 @@ const SubscribeForm = () => {
       ) : (
         <div className="step-2">
           <h1>Upload Image</h1>
-          <form className="phone-form">
-            <div id="recaptcha-container"></div>
-            <label htmlFor="phone">Enter Phone Number:</label>
-            <div className="phone-grp">
-              <input
-                value={phone}
-                onChange={handleInputChange}
-                type="text"
-                name="phone"
-                disabled={!!captchaSolved}
-                placeholder="Ex- +918888899999 "
-                label="Phone No."
-              />
+          {!complete && (
+            <form className="phone-form">
+              <div id="recaptcha-container"></div>
+              <label htmlFor="phone">Enter Phone Number:</label>
+              <div className="phone-grp">
+                <input
+                  value={phone}
+                  onChange={handleInputChange}
+                  type="text"
+                  name="phone"
+                  disabled={!!captchaSolved}
+                  placeholder="Ex- +918888899999 "
+                  label="Phone No."
+                />
 
-              <button onClick={onSubmit} className="otp-btn">
-                {" "}
-                Send OTP{" "}
-              </button>
-            </div>
-          </form>
+                <button onClick={onSubmit} className="otp-btn">
+                  {" "}
+                  Send OTP{" "}
+                </button>
+              </div>
+            </form>
+          )}
           {captchaSolved && !complete && (
             <form className="otp-form">
               <input
