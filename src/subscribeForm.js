@@ -51,7 +51,8 @@ const SubscribeForm = () => {
     }
   };
 
-  const onSubmit = async () => {
+  const onSubmit = async (e) => {
+    e.preventDefault();
     console.log("[SENDING PHONE NUMBER]");
     setupRecaptcha();
 
@@ -117,6 +118,7 @@ const SubscribeForm = () => {
     <div className="subscribe-form">
       {initialStep ? (
         <form onSubmit={handleFormSubmit} className="step-1">
+          <h1>Subscribe Us</h1>
           <input
             value={name}
             onChange={handleInputChange}
@@ -126,14 +128,6 @@ const SubscribeForm = () => {
             placeholder="Name"
           />
           <input
-            value={address}
-            onChange={handleInputChange}
-            name="address"
-            type="text"
-            label="address"
-            placeholder="Address"
-          />
-          <input
             value={email}
             onChange={handleInputChange}
             name="email"
@@ -141,6 +135,15 @@ const SubscribeForm = () => {
             label="email"
             placeholder="Email"
           />
+          <textarea
+            value={address}
+            onChange={handleInputChange}
+            name="address"
+            type="text"
+            label="address"
+            placeholder="Address (Optional)"
+          />
+
           <div className="btn-group">
             <button className="upload-btn" onClick={nextStep}>
               Upload Image
@@ -155,17 +158,23 @@ const SubscribeForm = () => {
           <h1>Upload Image</h1>
           <form className="phone-form">
             <div id="recaptcha-container"></div>
-            <input
-              value={phone}
-              onChange={handleInputChange}
-              type="text"
-              name="phone"
-              disabled={!!captchaSolved}
-              placeholder="Phone No."
-              label="Phone No."
-            />
+            <label htmlFor="phone">Enter Phone Number:</label>
+            <div className="phone-grp">
+              <input
+                value={phone}
+                onChange={handleInputChange}
+                type="text"
+                name="phone"
+                disabled={!!captchaSolved}
+                placeholder="Ex- +918888899999 "
+                label="Phone No."
+              />
 
-            <input type="button" value="Send OTP" onClick={onSubmit} />
+              <button onClick={onSubmit} className="otp-btn">
+                {" "}
+                Send OTP{" "}
+              </button>
+            </div>
           </form>
           {captchaSolved && !complete && (
             <form className="otp-form">
@@ -175,22 +184,30 @@ const SubscribeForm = () => {
                 name="otp"
                 type="text"
                 label="otp"
+                className="otp-input"
                 placeholder="OTP"
               />
               {imageFile && (
-                <img
-                  src={imageFile}
-                  alt="tree-user-uploaded"
-                  width="200px"
-                  className="uploaded-img"
-                />
+                <div className="img-container">
+                  <img
+                    src={imageFile}
+                    alt="tree-user-uploaded"
+                    width="200px"
+                    className="uploaded-img"
+                  />
+                </div>
               )}
               <input
                 onChange={(event) => handleChangeImage(event)}
                 id="imageFile"
+                className="custom-file-input"
                 type="file"
               />
-              <button onClick={confirmCode}>Submit</button>
+              <div style={{ display: "flex" }}>
+                <button onClick={confirmCode} className="verify-btn">
+                  Verify & Submit
+                </button>
+              </div>
             </form>
           )}
           {complete && <h3>Added Successfully</h3>}

@@ -1,0 +1,130 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap');
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    cursor: none;
+    
+    font-family: 'Poppins', sans-serif;
+}
+
+a {
+    text-decoration: none !important;
+}
+
+.subscribe-form {
+    width: 400px;
+    margin: 0 auto;
+}
+.subscribe-form input, textarea{
+    margin: 1rem;
+    font-weight: 600;
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+
+    padding: 0.8rem;
+    border-radius: 8px;
+    outline: none;
+    border: 1px solid black;
+}
+
+.subscribe-form input::placeholder, textarea::placeholder {
+    opacity: 0.7;
+}
+
+.step-1 {
+    display: flex;
+    flex-direction: column;
+}
+
+.btn-group {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.upload-btn, .submit-btn, .otp-btn, .verify-btn {
+    background-color: black;
+    width: 100%;
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+    border-radius: 8px;
+    outline: none;
+    border: none;
+    padding: 1rem;
+    margin: 1.5rem 1rem 1rem 1rem;
+}
+
+
+
+/* Step - 2 Form */
+
+.step-2 {
+    display: flex;
+    flex-direction: column;
+}
+
+.phone-form {
+    display: flex;
+    margin-top: 1rem;
+    flex-direction: column;
+}
+
+.phone-form label {
+    text-align: left;
+    margin-left: 1rem;
+}
+
+.phone-grp input {
+    margin-top: 1.5rem;
+}
+
+.phone-grp {
+    display: flex;
+}
+
+.otp-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.img-container {
+    display: flex;
+    margin: 0 auto;
+    border: 2px solid black;
+    border-radius: 8px;
+    padding: 8px;
+}
+.img-container .uploaded-img {
+    border-radius: 8px;   
+}
+
+.custom-file-input::-webkit-file-upload-button {
+    visibility: hidden;
+  }
+  .custom-file-input::before {
+    content: 'Browse File';
+    display: inline-block;
+    background: linear-gradient(top, #f9f9f9, #e3e3e3);
+    border: 1px solid #999;
+    border-radius: 3px;
+    padding: 5px 8px;
+    outline: none;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    cursor: pointer;
+    text-shadow: 1px 1px #fff;
+    font-weight: 700;
+    font-size: 10pt;
+  }
+  .custom-file-input:hover::before {
+    border-color: black;
+  }
+  .custom-file-input:active::before {
+    background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+  }
+  
